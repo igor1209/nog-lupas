@@ -10,7 +10,7 @@
     html::before, html::after {position:fixed;opacity:0;visibility:hidden;pointer-events:none;}
     html.nog-carregando::before {
       content:'';inset:0;z-index:99998;opacity:1;visibility:visible;
-      background:#101010 url('assets/logo.webp?v=20261111')
+      background:#101010 url('../assets/logo.webp?v=20261111')
         center calc(50% - 40px)/88px 88px no-repeat;
     }
     html.nog-carregando::after {
