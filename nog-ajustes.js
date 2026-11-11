@@ -118,27 +118,246 @@
     :root .site-header .mobile-nav a {color:#fff;border-bottom:1px solid #292929;}
     #nog-destaques {scroll-margin-top:calc(var(--nog-altura-cabecalho) + 18px);}
 
-    /* Foto original preservada; degradê é uma camada CSS fixa. */
-    :root .hero {height:100svh;min-height:640px;max-height:none;position:relative;overflow:hidden;}
-    :root .hero .hero-copy {
-      position:relative;z-index:2;padding-top:calc(var(--nog-altura-cabecalho) + 40px);
+
+    /* ===== NOG LUPAS — HERO INTEGRADA (HTML/CSS de verdade) ===== */
+    :root .hero.nog-hero {
+      --nog-black:#070707;--nog-white:#fff;--nog-offwhite:#f4f4f6;
+      --nog-purple-dark:#4b078f;--nog-purple:#7a31ff;
+      --nog-purple-medium:#9d47ff;--nog-purple-light:#c66bff;
+      --nog-border:rgba(255,255,255,.15);
+      position:relative;isolation:isolate;display:block !important;
+      height:auto !important;min-height:max(750px,100svh) !important;max-height:none;
+      padding:calc(var(--nog-altura-cabecalho) + 8px) 0 clamp(76px,8vw,110px);
+      color:#fff;overflow:hidden;background-color:var(--nog-black);
     }
-    :root .hero::after {
-      content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
-      background:linear-gradient(to bottom,
-        rgba(16,16,16,0) 0%,rgba(16,16,16,0) 53%,rgba(16,16,16,.08) 64%,
-        rgba(16,16,16,.26) 74%,rgba(16,16,16,.52) 84%,
-        rgba(16,16,16,.85) 94%,#101010 100%),
-        linear-gradient(90deg,rgba(0,0,0,.22),transparent 65%);
+    :root .hero.nog-hero::after {display:none !important;content:none !important;}
+    :root .hero.nog-hero .nog-hero__bg {
+      position:absolute;inset:0;z-index:0;pointer-events:none;
+      background-image:
+        repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0 1px,transparent 1px 64px),
+        radial-gradient(1050px 700px at 20% 30%,rgba(122,49,255,.065),transparent 60%),
+        radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55) 100%);
     }
-    :root .hero .cta {
+    :root .hero.nog-hero .nog-hero__grid {
+      position:relative;z-index:2;display:grid;
+      grid-template-columns:minmax(0,43fr) minmax(0,57fr);
+      align-items:center;max-width:1920px;margin:0 auto;
+      min-height:clamp(515px,49vw,790px);
+      animation:nog-hero-fade .5s ease both;
+    }
+    :root .hero.nog-hero .nog-hero__left {
+      min-width:0;display:flex;flex-direction:column;align-items:flex-start;
+      justify-content:center;gap:clamp(1.6rem,2.7vw,2.6rem);
+      padding:clamp(2rem,4vw,4rem) clamp(1.4rem,2.5vw,3rem)
+              clamp(2rem,3vw,3rem) clamp(1.5rem,5.5vw,5.5rem);
+    }
+    :root .hero.nog-hero .nog-hero__logo-block {
+      display:flex;flex-direction:column;align-items:flex-start;
+      gap:.65rem;max-width:100%;
+    }
+    :root .hero.nog-hero .nog-hero__logo-link {
+      position:relative;display:inline-flex;align-items:center;
+      text-decoration:none;color:#fff;max-width:100%;
+    }
+    :root .hero.nog-hero .nog-hero__wordmark {
+      display:inline-flex;align-items:center;gap:.23em;white-space:nowrap;
+      font:900 clamp(31px,3.35vw,68px)/1.14 'Montserrat',Arial,sans-serif;
+      letter-spacing:-.085em;text-transform:uppercase;
+    }
+    :root .hero.nog-hero .nog-hero__logo-word {display:inline-flex;}
+    :root .hero.nog-hero .nog-hero__logo-letter {
+      display:inline-block;transform-origin:50% 75%;color:#6a51a2;
+      -webkit-text-stroke:clamp(1px,.15vw,2.4px) #fff;paint-order:stroke fill;
+      text-shadow:2px 4px 0 #311a49,0 5px 15px rgba(122,49,255,.3);
+      transition:transform .28s cubic-bezier(.2,.8,.2,1),filter .28s ease;
+    }
+    :root .hero.nog-hero .nog-hero__crown {
+      position:absolute;top:-20px;left:0;width:34px;height:26px;
+      transform:rotate(-12deg);fill:#e9bd19;stroke:#f6dd67;
+      stroke-width:.6;pointer-events:none;
+    }
+    @media (hover:hover) {
+      :root .hero.nog-hero .nog-hero__logo-link:hover .nog-hero__logo-letter:nth-child(odd) {
+        transform:translateY(-4px) rotate(-3deg);filter:brightness(1.16);
+      }
+      :root .hero.nog-hero .nog-hero__logo-link:hover .nog-hero__logo-letter:nth-child(even) {
+        transform:translateY(3px) rotate(3deg);filter:brightness(1.16);
+      }
+    }
+    :root .hero.nog-hero .nog-hero__subtitle {
+      width:100%;display:flex;align-items:center;justify-content:center;gap:12px;
+      margin:0;color:#fff;white-space:nowrap;text-transform:uppercase;
+      font:500 clamp(10px,.92vw,13px)/1.2 'Montserrat',Arial,sans-serif;
+      letter-spacing:.27em;
+    }
+    :root .hero.nog-hero .nog-hero__subtitle::before,
+    :root .hero.nog-hero .nog-hero__subtitle::after {
+      content:"";height:1px;min-width:12px;flex:1;background:rgba(255,255,255,.5);
+    }
+    :root .hero.nog-hero .nog-hero__title {
+      margin:0;max-width:100%;color:#fff;text-transform:uppercase;
+      font:800 1rem/.94 'Montserrat',Arial,sans-serif;letter-spacing:-.025em;
+    }
+    :root .hero.nog-hero .nog-hero__title-line {
+      display:block;white-space:nowrap;font-size:clamp(30px,3.85vw,68px);
+      transition:filter .25s ease;
+    }
+    :root .hero.nog-hero .nog-hero__title-word {
+      display:block;width:fit-content;max-width:100%;white-space:nowrap;
+      font:400 clamp(68px,7.75vw,140px)/.96 'Anton','Montserrat',Impact,sans-serif;
+      letter-spacing:-.02em;
+      background:linear-gradient(180deg,#d978ff 0%,#a34bff 45%,#7a31ff 100%);
+      -webkit-background-clip:text;background-clip:text;
+      -webkit-text-fill-color:transparent;color:transparent;
+      filter:drop-shadow(0 6px 18px rgba(122,49,255,.16));
+      transition:filter .25s ease;
+    }
+    @media (hover:hover) {
+      :root .hero.nog-hero .nog-hero__title:hover .nog-hero__title-line {filter:brightness(1.08);}
+      :root .hero.nog-hero .nog-hero__title:hover .nog-hero__title-word {
+        filter:brightness(1.1) drop-shadow(0 6px 18px rgba(122,49,255,.26));
+      }
+    }
+    :root .hero.nog-hero .nog-hero__perks {
+      display:flex;align-items:center;flex-wrap:wrap;gap:clamp(.6rem,1vw,1.25rem);
+      margin:0;padding:0;list-style:none;
+    }
+    :root .hero.nog-hero .nog-hero__perk {
+      display:flex;align-items:center;gap:.6rem;min-height:49px;
+      padding-right:clamp(.75rem,1.1vw,1.5rem);
+      color:#fff;font:700 clamp(10px,.85vw,13px)/1.2 'Montserrat',Arial,sans-serif;
+      text-transform:uppercase;border-right:1px solid var(--nog-border);
+    }
+    :root .hero.nog-hero .nog-hero__perk:last-child {border-right:0;padding-right:0;}
+    :root .hero.nog-hero .nog-hero__icon {
+      width:clamp(26px,2.1vw,34px);height:clamp(26px,2.1vw,34px);
+      flex-shrink:0;fill:none;stroke:currentColor;color:var(--nog-purple-medium);
+      stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;
+      transition:color .2s ease;
+    }
+    :root .hero.nog-hero .nog-hero__perk:hover .nog-hero__icon {color:var(--nog-purple-light);}
+    :root .hero.nog-hero .nog-hero__cta {
       display:inline-flex;align-items:center;justify-content:center;
-      min-width:168px;min-height:52px;padding:15px 26px;background:#101010;color:#fff;
-      border:1px solid #101010;border-radius:0;box-shadow:none;
-      font:400 15px/1.1 Impact,'Arial Narrow',Arial,sans-serif;
-      letter-spacing:.035em;text-transform:uppercase;text-align:center;
+      min-height:48px;min-width:168px;padding:13px 25px;
+      background:#6a51a2;border:1px solid rgba(255,255,255,.22);
+      color:#fff;text-decoration:none;
+      font:700 12px/1.2 'Montserrat',Arial,sans-serif;
+      letter-spacing:.06em;text-transform:uppercase;
+      transition:background-color .2s ease,transform .2s ease;
     }
-    :root .hero .cta:hover {background:#2a2a2a;border-color:#2a2a2a;box-shadow:none;}
+    :root .hero.nog-hero .nog-hero__cta:hover {
+      background:#6f3e98;transform:translateY(-2px);
+    }
+    :root .hero.nog-hero .nog-hero__right {
+      position:relative;min-width:0;isolation:isolate;display:flex;
+      align-items:flex-end;justify-content:center;
+      height:clamp(510px,49vw,760px);
+    }
+    :root .hero.nog-hero .nog-hero__brush {
+      position:absolute;inset:-4% -4% 0 -12%;z-index:0;pointer-events:none;
+      background:#f4f4f6;
+      -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M34 0L100 0 94 3 100 7 94 11 100 15 93 19 100 23 95 27 100 31 93 35 100 39 94 43 100 47 94 51 100 55 93 59 100 63 93 67 100 71 94 76 100 80 93 84 100 88 94 93 100 100 10 100 17 95 8 90 20 86 12 81 22 76 14 71 25 66 17 60 29 56 20 51 31 46 22 41 31 36 23 30 34 25 26 20 39 15 31 11 44 6Z' fill='black'/%3E%3C/svg%3E");
+      mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M34 0L100 0 94 3 100 7 94 11 100 15 93 19 100 23 95 27 100 31 93 35 100 39 94 43 100 47 94 51 100 55 93 59 100 63 93 67 100 71 94 76 100 80 93 84 100 88 94 93 100 100 10 100 17 95 8 90 20 86 12 81 22 76 14 71 25 66 17 60 29 56 20 51 31 46 22 41 31 36 23 30 34 25 26 20 39 15 31 11 44 6Z' fill='black'/%3E%3C/svg%3E");
+      -webkit-mask-size:100% 100%;mask-size:100% 100%;
+      -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+    }
+    :root .hero.nog-hero #campaign.nog-hero__photo {
+      display:block !important;position:relative !important;z-index:1;
+      inset:auto !important;opacity:1 !important;max-width:100% !important;
+      width:100% !important;height:100% !important;
+      object-fit:contain !important;object-position:center bottom !important;
+      filter:none !important;mix-blend-mode:normal !important;pointer-events:none;
+    }
+    :root .hero.nog-hero .nog-hero__ribbon {
+      position:absolute;left:-3%;right:-3%;bottom:clamp(52px,6vw,76px);z-index:5;
+      transform:rotate(-1.2deg);overflow:hidden;
+      background:linear-gradient(90deg,#4b078f 0%,#7a31ff 45%,#9d47ff 100%);
+      border-top:2px solid rgba(255,255,255,.7);
+      border-bottom:2px solid rgba(255,255,255,.7);
+      padding:8px 0;box-shadow:0 8px 18px rgba(0,0,0,.2);
+      animation:nog-hero-fade .5s ease both;
+    }
+    :root .hero.nog-hero .nog-hero__ribbon-track {
+      display:flex;align-items:center;width:max-content;white-space:nowrap;
+      color:#fff;font:700 clamp(11px,.85vw,14px)/1 'Montserrat',Arial,sans-serif;
+      text-transform:uppercase;letter-spacing:.045em;
+      animation:nog-ribbon-scroll 50s linear infinite;
+    }
+    :root .hero.nog-hero .nog-hero__ribbon-track>span {
+      display:block;flex:0 0 auto;padding-right:25px;
+    }
+    @keyframes nog-ribbon-scroll {from{transform:translateX(0);}to{transform:translateX(-50%);}}
+    :root .hero.nog-hero .nog-hero__watermark {
+      position:absolute;left:-1vw;right:0;bottom:0;z-index:1;overflow:hidden;
+      color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.075);
+      font:800 clamp(40px,7vw,100px)/1 'Montserrat',Arial,sans-serif;
+      text-transform:uppercase;letter-spacing:-.04em;white-space:nowrap;
+      user-select:none;pointer-events:none;
+    }
+    @keyframes nog-hero-fade {from{opacity:0;}to{opacity:1;}}
+    :root .hero.nog-hero :is(.nog-hero__logo-link,.nog-hero__cta):focus-visible {
+      outline:2px solid #fff;outline-offset:4px;
+    }
+    @media (max-width:1240px) {
+      :root .hero.nog-hero .nog-hero__grid {grid-template-columns:minmax(0,46fr) minmax(0,54fr);}
+      :root .hero.nog-hero .nog-hero__left {padding-inline:3vw 1.2vw;}
+      :root .hero.nog-hero .nog-hero__perks {gap:8px;}
+      :root .hero.nog-hero .nog-hero__perk {gap:6px;padding-right:8px;}
+    }
+    @media (max-width:1024px) {
+      :root .hero.nog-hero .nog-hero__grid {grid-template-columns:minmax(0,49fr) minmax(0,51fr);}
+      :root .hero.nog-hero .nog-hero__wordmark {font-size:clamp(32px,4vw,50px);}
+      :root .hero.nog-hero .nog-hero__title-line {font-size:clamp(31px,4vw,50px);}
+      :root .hero.nog-hero .nog-hero__title-word {font-size:clamp(67px,8.2vw,110px);}
+      :root .hero.nog-hero .nog-hero__perk {font-size:10px;}
+      :root .hero.nog-hero .nog-hero__icon {width:26px;height:26px;}
+    }
+    @media (max-width:768px) {
+      :root .hero.nog-hero {
+        padding-top:calc(var(--nog-altura-cabecalho) + 8px);
+        padding-bottom:66px;min-height:auto !important;
+      }
+      :root .hero.nog-hero .nog-hero__grid {grid-template-columns:1fr;min-height:0;}
+      :root .hero.nog-hero .nog-hero__left {
+        align-items:center;text-align:center;gap:1.5rem;
+        padding:3rem 1.25rem 1.2rem;
+      }
+      :root .hero.nog-hero .nog-hero__logo-block {align-items:center;}
+      :root .hero.nog-hero .nog-hero__wordmark {font-size:clamp(33px,8vw,62px);}
+      :root .hero.nog-hero .nog-hero__title-line {font-size:clamp(34px,8vw,60px);}
+      :root .hero.nog-hero .nog-hero__title-word {
+        margin-inline:auto;font-size:clamp(58px,16.5vw,112px);
+      }
+      :root .hero.nog-hero .nog-hero__perks {justify-content:center;gap:9px;}
+      :root .hero.nog-hero .nog-hero__perk {font-size:clamp(9px,2vw,12px);padding-right:9px;}
+      :root .hero.nog-hero .nog-hero__icon {width:27px;height:27px;}
+      :root .hero.nog-hero .nog-hero__right {height:min(77vw,470px);min-height:280px;}
+      :root .hero.nog-hero .nog-hero__brush {inset:-3% 0 0 -5%;}
+      :root .hero.nog-hero .nog-hero__ribbon {bottom:40px;padding:7px 0;}
+      :root .hero.nog-hero .nog-hero__ribbon-track {font-size:11px;}
+      :root .hero.nog-hero .nog-hero__watermark {font-size:clamp(40px,9vw,64px);}
+    }
+    @media (max-width:420px) {
+      :root .hero.nog-hero .nog-hero__left {padding-top:2.6rem;}
+      :root .hero.nog-hero .nog-hero__wordmark {font-size:clamp(27px,8.1vw,38px);}
+      :root .hero.nog-hero .nog-hero__title-word {font-size:clamp(54px,16.5vw,69px);}
+      :root .hero.nog-hero .nog-hero__title-line {font-size:clamp(29px,7.8vw,39px);}
+      :root .hero.nog-hero .nog-hero__perks {gap:0;flex-wrap:nowrap;width:100%;}
+      :root .hero.nog-hero .nog-hero__perk {
+        flex:1;min-width:0;justify-content:center;gap:4px;
+        padding:0 4px;font-size:8px;
+      }
+      :root .hero.nog-hero .nog-hero__icon {width:22px;height:22px;}
+      :root .hero.nog-hero .nog-hero__right {height:80vw;min-height:255px;}
+    }
+    @media (prefers-reduced-motion:reduce) {
+      :root .hero.nog-hero .nog-hero__ribbon-track,
+      :root .hero.nog-hero .nog-hero__grid,
+      :root .hero.nog-hero .nog-hero__ribbon {animation:none !important;}
+      :root .hero.nog-hero .nog-hero__logo-letter,
+      :root .hero.nog-hero .nog-hero__title-line,
+      :root .hero.nog-hero .nog-hero__title-word {transition:none !important;}
+    }
 
     /* Visual e funcionamento do catálogo preservados. */
     :root .catalog {
@@ -703,7 +922,9 @@
         }
         if (seletor === '#mobile-nav') {
           link.addEventListener('click', () => {
-            if (typeof closeMenu === 'function') closeMenu();
+            const menu = document.querySelector('#mobile-nav');
+            const toggle = document.querySelector('#menu-toggle');
+            if (menu && !menu.hidden && toggle) toggle.click();
           });
         }
         nav.insertBefore(link, primeiroItem);
@@ -711,9 +932,99 @@
     });
   }
 
+  /* Hero: logo, título, ícones e faixa são HTML/SVG reais.
+     O único elemento fotográfico é assets/homem-nog.png. */
+  function montarNovaHero() {
+    const hero = document.querySelector('#inicio.hero');
+    if (!hero || hero.classList.contains('nog-hero-v2')) return;
+
+    const letras = palavra => Array.from(palavra).map(letra =>
+      `<span class="nog-logo-letter" aria-hidden="true">${letra}</span>`
+    ).join('');
+
+    const itens = 'NOG LUPAS · ÓCULOS · ESTILO · PROTEÇÃO · PERFORMANCE';
+    const repetir = () => Array(6).fill(0).map(() =>
+      `<span>${itens}</span>`
+    ).join('');
+
+    hero.classList.add('nog-hero-v2');
+    hero.setAttribute('aria-labelledby','hero-title');
+    hero.innerHTML = `
+      <div class="nog-hero-inner">
+        <div class="nog-hero-content">
+          <a class="nog-hero-logo" href="#inicio" aria-label="NOG Lupas, início">
+            <span class="nog-logo-row" aria-hidden="true">
+              <span class="nog-logo-word">${letras('NOG')}</span>
+              <span class="nog-logo-word">${letras('LUPAS')}</span>
+            </span>
+            <span class="nog-logo-subtitle">Óculos e estilo</span>
+          </a>
+          <h1 class="nog-welcome" id="hero-title">
+            <span class="nog-welcome-top">Sejam bem</span>
+            <span class="nog-welcome-bottom">Vindos!</span>
+          </h1>
+          <div class="nog-hero-benefits" aria-label="Diferenciais da NOG">
+            <div class="nog-benefit">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2 20 5v6c0 5-3 8.5-8 11-5-2.5-8-6-8-11V5l8-3Z"/>
+                <path d="m8 12 2.7 2.7L16.5 9"/>
+              </svg>
+              <strong>Qualidade<br>garantida</strong>
+            </div>
+            <div class="nog-benefit">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 6h11v10H3zM14 9h4l3 4v3h-7"/>
+                <circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/>
+                <path d="M1 10h5M1 13h4"/>
+              </svg>
+              <strong>Envio<br>rápido</strong>
+            </div>
+            <div class="nog-benefit">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="2" y="5" width="20" height="14" rx="2"/>
+                <path d="M2 10h20M6 15h5"/>
+              </svg>
+              <strong>Pagamento<br>seguro</strong>
+            </div>
+          </div>
+          <div class="nog-hero-actions">
+            <a class="nog-hero-cta" href="#catalogo">Explorar modelos</a>
+          </div>
+        </div>
+        <div class="nog-hero-visual">
+          <svg class="nog-hero-brush" viewBox="0 0 750 800" preserveAspectRatio="none" aria-hidden="true">
+            <defs>
+              <filter id="nog-brush-rough" x="-8%" y="-8%" width="116%" height="116%">
+                <feTurbulence type="fractalNoise" baseFrequency=".018 .035" numOctaves="3" seed="6" result="grain"/>
+                <feDisplacementMap in="SourceGraphic" in2="grain" scale="22" xChannelSelector="R" yChannelSelector="G"/>
+              </filter>
+            </defs>
+            <g filter="url(#nog-brush-rough)">
+              <path fill="#fff" d="M155 2 746 0 692 31 748 58 715 85 750 112 716 129 750 167 711 187 743 205 714 238 750 260 728 301 749 322 707 345 748 377 706 398 743 419 707 444 747 466 708 499 746 514 699 544 748 565 712 584 742 607 694 632 734 653 703 689 737 704 708 733 750 754 717 783 740 799 71 800 100 757 58 729 109 697 74 673 113 645 66 618 117 594 76 562 122 540 93 507 133 477 88 449 130 412 93 386 142 361 105 332 154 307 123 279 165 247 140 220 179 197 153 170 203 146 178 126 222 102 204 82 250 56 233 36Z"/>
+            <path fill="#fff" d="M28 170 155 110 142 139 23 201Z M3 390 139 337 129 357 19 416Z M4 605 120 555 106 578 14 637Z M52 766 131 722 115 746 40 788Z"/>
+            </g>
+          </svg>
+          <img id="campaign" class="nog-hero-man"
+               src="assets/homem-nog.png"
+               width="829" height="1037"
+               alt="Representante da NOG Lupas usando óculos escuros e segurando uma bota de exposição"
+               decoding="async" fetchpriority="high">
+        </div>
+      </div>
+      <div class="nog-hero-watermark" aria-hidden="true">
+        <span>NOG LUPAS</span><span>NOG LUPAS</span><span>NOG LUPAS</span>
+      </div>
+      <div class="nog-hero-marquee" aria-hidden="true">
+        <div class="nog-marquee-track">
+          <div class="nog-marquee-segment">${repetir()}</div>
+          <div class="nog-marquee-segment">${repetir()}</div>
+        </div>
+      </div>
+    `;
+  }
+
   function prepararInterface() {
-    const botao = document.querySelector('.hero .cta');
-    if (botao) botao.textContent = 'COMPRE AGORA';
+    montarNovaHero();
     const catalogo = document.querySelector('.catalog');
     const cabecalhoCatalogo = catalogo?.querySelector('.catalog-head');
     if (catalogo && cabecalhoCatalogo && !catalogo.querySelector('.nog-catalog-intro')) {
