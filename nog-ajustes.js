@@ -1008,9 +1008,9 @@
           <div class="nog-hero__brush" aria-hidden="true"></div>
           <img id="campaign"
                class="nog-hero__photo"
-               src="assets/homem-nog.png"
+               src="assets/homem-nog.webp"
                alt="Representante da NOG Lupas usando óculos escuros e segurando um item de exposição"
-               width="829" height="1037" loading="eager"
+               width="720" height="901" loading="eager"
                decoding="async" fetchpriority="high">
         </div>
       </div>
