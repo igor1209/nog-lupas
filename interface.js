@@ -1,6 +1,6 @@
 /*
  * NOG Lupas — ajustes finais de interface, navegação e rodapé.
- * Mantém catálogo, produtos, filtros, visualizador e sacola do index.html / nog-upgrade.js.
+ * Mantém catálogo, produtos, filtros, visualizador e sacola do index.html / conta-sacola.js.
  * Uma única implementação do rodapé: montarFooterFinal().
  */
 (() => {
@@ -8,7 +8,7 @@
 
   const root = document.documentElement;
   root.classList.add('nog-carregando');
-  // Estilos movidos integralmente para nog-ajustes.css.
+  // Estilos movidos integralmente para aparencia.css.
 
   function encerrarCarregamento() {
     root.classList.remove('nog-carregando');
@@ -228,7 +228,7 @@
 
 
   /* Hero em HTML/CSS/SVG, sem tipografia incorporada na fotografia.
-     Substituída após nog-upgrade.js inicializar os controles legados. */
+     Substituída após conta-sacola.js inicializar os controles legados. */
   function montarNovaHero() {
     const hero = document.querySelector('#inicio.hero');
     if (!hero || hero.classList.contains('nog-hero')) return;

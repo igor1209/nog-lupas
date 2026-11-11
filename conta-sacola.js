@@ -53,7 +53,7 @@
    * CSS adicional
    */
 
-  // Estilos movidos integralmente para nog-upgrade.css.
+  // Estilos movidos integralmente para conta-sacola.css.
 
   /*
    * Imagens transparentes dos produtos.
@@ -806,7 +806,7 @@
   productCTA.textContent =
     "Tirar dúvidas sobre este modelo";
 
-  /* O rodapé é controlado apenas por montarFooterFinal() em nog-ajustes.js. */
+  /* O rodapé é controlado apenas por montarFooterFinal() em interface.js. */
 
   /*
    * Inicialização
