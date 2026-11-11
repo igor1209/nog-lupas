@@ -1,17 +1,5 @@
-/*
- * NOG Lupas — ajustes finais de interface, navegação e rodapé.
- * Mantém catálogo, produtos, filtros, visualizador e sacola do index.html / nog-upgrade.js.
- * Uma única implementação do rodapé: montarFooterFinal().
- */
-(() => {
-  'use strict';
-
-  const root = document.documentElement;
-  root.classList.add('nog-carregando');
-  const style = document.createElement('style');
-  style.id = 'nog-ajustes-style';
-  style.textContent = `
-    :root {
+/* Aparência, hero, cabeçalho e footer NOG Lupas. */
+:root {
       --nog-roxo: #6A51A2;
       --nog-roxo-escuro: #6F3E98;
       --nog-preto: #000;
@@ -118,27 +106,246 @@
     :root .site-header .mobile-nav a {color:#fff;border-bottom:1px solid #292929;}
     #nog-destaques {scroll-margin-top:calc(var(--nog-altura-cabecalho) + 18px);}
 
-    /* Foto original preservada; degradê é uma camada CSS fixa. */
-    :root .hero {height:100svh;min-height:640px;max-height:none;position:relative;overflow:hidden;}
-    :root .hero .hero-copy {
-      position:relative;z-index:2;padding-top:calc(var(--nog-altura-cabecalho) + 40px);
+
+    /* ===== NOG LUPAS — HERO INTEGRADA (HTML/CSS de verdade) ===== */
+    :root .hero.nog-hero {
+      --nog-black:#070707;--nog-white:#fff;--nog-offwhite:#f4f4f6;
+      --nog-purple-dark:#4b078f;--nog-purple:#7a31ff;
+      --nog-purple-medium:#9d47ff;--nog-purple-light:#c66bff;
+      --nog-border:rgba(255,255,255,.15);
+      position:relative;isolation:isolate;display:block !important;
+      height:auto !important;min-height:max(750px,100svh) !important;max-height:none;
+      padding:calc(var(--nog-altura-cabecalho) + 8px) 0 clamp(76px,8vw,110px);
+      color:#fff;overflow:hidden;background-color:var(--nog-black);
     }
-    :root .hero::after {
-      content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
-      background:linear-gradient(to bottom,
-        rgba(16,16,16,0) 0%,rgba(16,16,16,0) 53%,rgba(16,16,16,.08) 64%,
-        rgba(16,16,16,.26) 74%,rgba(16,16,16,.52) 84%,
-        rgba(16,16,16,.85) 94%,#101010 100%),
-        linear-gradient(90deg,rgba(0,0,0,.22),transparent 65%);
+    :root .hero.nog-hero::after {display:none !important;content:none !important;}
+    :root .hero.nog-hero .nog-hero__bg {
+      position:absolute;inset:0;z-index:0;pointer-events:none;
+      background-image:
+        repeating-linear-gradient(90deg,rgba(255,255,255,.02) 0 1px,transparent 1px 64px),
+        radial-gradient(1050px 700px at 20% 30%,rgba(122,49,255,.065),transparent 60%),
+        radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.55) 100%);
     }
-    :root .hero .cta {
+    :root .hero.nog-hero .nog-hero__grid {
+      position:relative;z-index:2;display:grid;
+      grid-template-columns:minmax(0,43fr) minmax(0,57fr);
+      align-items:center;max-width:1920px;margin:0 auto;
+      min-height:clamp(515px,49vw,790px);
+      animation:nog-hero-fade .5s ease both;
+    }
+    :root .hero.nog-hero .nog-hero__left {
+      min-width:0;display:flex;flex-direction:column;align-items:flex-start;
+      justify-content:center;gap:clamp(1.6rem,2.7vw,2.6rem);
+      padding:clamp(2rem,4vw,4rem) clamp(1.4rem,2.5vw,3rem)
+              clamp(2rem,3vw,3rem) clamp(1.5rem,5.5vw,5.5rem);
+    }
+    :root .hero.nog-hero .nog-hero__logo-block {
+      display:flex;flex-direction:column;align-items:flex-start;
+      gap:.65rem;max-width:100%;
+    }
+    :root .hero.nog-hero .nog-hero__logo-link {
+      position:relative;display:inline-flex;align-items:center;
+      text-decoration:none;color:#fff;max-width:100%;
+    }
+    :root .hero.nog-hero .nog-hero__wordmark {
+      display:inline-flex;align-items:center;gap:.23em;white-space:nowrap;
+      font:900 clamp(31px,3.35vw,68px)/1.14 'Montserrat',Arial,sans-serif;
+      letter-spacing:-.085em;text-transform:uppercase;
+    }
+    :root .hero.nog-hero .nog-hero__logo-word {display:inline-flex;}
+    :root .hero.nog-hero .nog-hero__logo-letter {
+      display:inline-block;transform-origin:50% 75%;color:#6a51a2;
+      -webkit-text-stroke:clamp(1px,.15vw,2.4px) #fff;paint-order:stroke fill;
+      text-shadow:2px 4px 0 #311a49,0 5px 15px rgba(122,49,255,.3);
+      transition:transform .28s cubic-bezier(.2,.8,.2,1),filter .28s ease;
+    }
+    :root .hero.nog-hero .nog-hero__crown {
+      position:absolute;top:-20px;left:0;width:34px;height:26px;
+      transform:rotate(-12deg);fill:#e9bd19;stroke:#f6dd67;
+      stroke-width:.6;pointer-events:none;
+    }
+    @media (hover:hover) {
+      :root .hero.nog-hero .nog-hero__logo-link:hover .nog-hero__logo-letter:nth-child(odd) {
+        transform:translateY(-4px) rotate(-3deg);filter:brightness(1.16);
+      }
+      :root .hero.nog-hero .nog-hero__logo-link:hover .nog-hero__logo-letter:nth-child(even) {
+        transform:translateY(3px) rotate(3deg);filter:brightness(1.16);
+      }
+    }
+    :root .hero.nog-hero .nog-hero__subtitle {
+      width:100%;display:flex;align-items:center;justify-content:center;gap:12px;
+      margin:0;color:#fff;white-space:nowrap;text-transform:uppercase;
+      font:500 clamp(10px,.92vw,13px)/1.2 'Montserrat',Arial,sans-serif;
+      letter-spacing:.27em;
+    }
+    :root .hero.nog-hero .nog-hero__subtitle::before,
+    :root .hero.nog-hero .nog-hero__subtitle::after {
+      content:"";height:1px;min-width:12px;flex:1;background:rgba(255,255,255,.5);
+    }
+    :root .hero.nog-hero .nog-hero__title {
+      margin:0;max-width:100%;color:#fff;text-transform:uppercase;
+      font:800 1rem/.94 'Montserrat',Arial,sans-serif;letter-spacing:-.025em;
+    }
+    :root .hero.nog-hero .nog-hero__title-line {
+      display:block;white-space:nowrap;font-size:clamp(30px,3.85vw,68px);
+      transition:filter .25s ease;
+    }
+    :root .hero.nog-hero .nog-hero__title-word {
+      display:block;width:fit-content;max-width:100%;white-space:nowrap;
+      font:400 clamp(68px,7.75vw,140px)/.96 'Anton','Montserrat',Impact,sans-serif;
+      letter-spacing:-.02em;
+      background:linear-gradient(180deg,#d978ff 0%,#a34bff 45%,#7a31ff 100%);
+      -webkit-background-clip:text;background-clip:text;
+      -webkit-text-fill-color:transparent;color:transparent;
+      filter:drop-shadow(0 6px 18px rgba(122,49,255,.16));
+      transition:filter .25s ease;
+    }
+    @media (hover:hover) {
+      :root .hero.nog-hero .nog-hero__title:hover .nog-hero__title-line {filter:brightness(1.08);}
+      :root .hero.nog-hero .nog-hero__title:hover .nog-hero__title-word {
+        filter:brightness(1.1) drop-shadow(0 6px 18px rgba(122,49,255,.26));
+      }
+    }
+    :root .hero.nog-hero .nog-hero__perks {
+      display:flex;align-items:center;flex-wrap:wrap;gap:clamp(.6rem,1vw,1.25rem);
+      margin:0;padding:0;list-style:none;
+    }
+    :root .hero.nog-hero .nog-hero__perk {
+      display:flex;align-items:center;gap:.6rem;min-height:49px;
+      padding-right:clamp(.75rem,1.1vw,1.5rem);
+      color:#fff;font:700 clamp(10px,.85vw,13px)/1.2 'Montserrat',Arial,sans-serif;
+      text-transform:uppercase;border-right:1px solid var(--nog-border);
+    }
+    :root .hero.nog-hero .nog-hero__perk:last-child {border-right:0;padding-right:0;}
+    :root .hero.nog-hero .nog-hero__icon {
+      width:clamp(26px,2.1vw,34px);height:clamp(26px,2.1vw,34px);
+      flex-shrink:0;fill:none;stroke:currentColor;color:var(--nog-purple-medium);
+      stroke-width:1.75;stroke-linecap:round;stroke-linejoin:round;
+      transition:color .2s ease;
+    }
+    :root .hero.nog-hero .nog-hero__perk:hover .nog-hero__icon {color:var(--nog-purple-light);}
+    :root .hero.nog-hero .nog-hero__cta {
       display:inline-flex;align-items:center;justify-content:center;
-      min-width:168px;min-height:52px;padding:15px 26px;background:#101010;color:#fff;
-      border:1px solid #101010;border-radius:0;box-shadow:none;
-      font:400 15px/1.1 Impact,'Arial Narrow',Arial,sans-serif;
-      letter-spacing:.035em;text-transform:uppercase;text-align:center;
+      min-height:48px;min-width:168px;padding:13px 25px;
+      background:#6a51a2;border:1px solid rgba(255,255,255,.22);
+      color:#fff;text-decoration:none;
+      font:700 12px/1.2 'Montserrat',Arial,sans-serif;
+      letter-spacing:.06em;text-transform:uppercase;
+      transition:background-color .2s ease,transform .2s ease;
     }
-    :root .hero .cta:hover {background:#2a2a2a;border-color:#2a2a2a;box-shadow:none;}
+    :root .hero.nog-hero .nog-hero__cta:hover {
+      background:#6f3e98;transform:translateY(-2px);
+    }
+    :root .hero.nog-hero .nog-hero__right {
+      position:relative;min-width:0;isolation:isolate;display:flex;
+      align-items:flex-end;justify-content:center;
+      height:clamp(510px,49vw,760px);
+    }
+    :root .hero.nog-hero .nog-hero__brush {
+      position:absolute;inset:-4% -4% 0 -12%;z-index:0;pointer-events:none;
+      background:#f4f4f6;
+      -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M34 0L100 0 94 3 100 7 94 11 100 15 93 19 100 23 95 27 100 31 93 35 100 39 94 43 100 47 94 51 100 55 93 59 100 63 93 67 100 71 94 76 100 80 93 84 100 88 94 93 100 100 10 100 17 95 8 90 20 86 12 81 22 76 14 71 25 66 17 60 29 56 20 51 31 46 22 41 31 36 23 30 34 25 26 20 39 15 31 11 44 6Z' fill='black'/%3E%3C/svg%3E");
+      mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' preserveAspectRatio='none'%3E%3Cpath d='M34 0L100 0 94 3 100 7 94 11 100 15 93 19 100 23 95 27 100 31 93 35 100 39 94 43 100 47 94 51 100 55 93 59 100 63 93 67 100 71 94 76 100 80 93 84 100 88 94 93 100 100 10 100 17 95 8 90 20 86 12 81 22 76 14 71 25 66 17 60 29 56 20 51 31 46 22 41 31 36 23 30 34 25 26 20 39 15 31 11 44 6Z' fill='black'/%3E%3C/svg%3E");
+      -webkit-mask-size:100% 100%;mask-size:100% 100%;
+      -webkit-mask-repeat:no-repeat;mask-repeat:no-repeat;
+    }
+    :root .hero.nog-hero #campaign.nog-hero__photo {
+      display:block !important;position:relative !important;z-index:1;
+      inset:auto !important;opacity:1 !important;max-width:100% !important;
+      width:100% !important;height:100% !important;
+      object-fit:contain !important;object-position:center bottom !important;
+      filter:none !important;mix-blend-mode:normal !important;pointer-events:none;
+    }
+    :root .hero.nog-hero .nog-hero__ribbon {
+      position:absolute;left:-3%;right:-3%;bottom:clamp(52px,6vw,76px);z-index:5;
+      transform:rotate(-1.2deg);overflow:hidden;
+      background:linear-gradient(90deg,#4b078f 0%,#7a31ff 45%,#9d47ff 100%);
+      border-top:2px solid rgba(255,255,255,.7);
+      border-bottom:2px solid rgba(255,255,255,.7);
+      padding:8px 0;box-shadow:0 8px 18px rgba(0,0,0,.2);
+      animation:nog-hero-fade .5s ease both;
+    }
+    :root .hero.nog-hero .nog-hero__ribbon-track {
+      display:flex;align-items:center;width:max-content;white-space:nowrap;
+      color:#fff;font:700 clamp(11px,.85vw,14px)/1 'Montserrat',Arial,sans-serif;
+      text-transform:uppercase;letter-spacing:.045em;
+      animation:nog-ribbon-scroll 50s linear infinite;
+    }
+    :root .hero.nog-hero .nog-hero__ribbon-track>span {
+      display:block;flex:0 0 auto;padding-right:25px;
+    }
+    @keyframes nog-ribbon-scroll {from{transform:translateX(0);}to{transform:translateX(-50%);}}
+    :root .hero.nog-hero .nog-hero__watermark {
+      position:absolute;left:-1vw;right:0;bottom:0;z-index:1;overflow:hidden;
+      color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.075);
+      font:800 clamp(40px,7vw,100px)/1 'Montserrat',Arial,sans-serif;
+      text-transform:uppercase;letter-spacing:-.04em;white-space:nowrap;
+      user-select:none;pointer-events:none;
+    }
+    @keyframes nog-hero-fade {from{opacity:0;}to{opacity:1;}}
+    :root .hero.nog-hero :is(.nog-hero__logo-link,.nog-hero__cta):focus-visible {
+      outline:2px solid #fff;outline-offset:4px;
+    }
+    @media (max-width:1240px) {
+      :root .hero.nog-hero .nog-hero__grid {grid-template-columns:minmax(0,46fr) minmax(0,54fr);}
+      :root .hero.nog-hero .nog-hero__left {padding-inline:3vw 1.2vw;}
+      :root .hero.nog-hero .nog-hero__perks {gap:8px;}
+      :root .hero.nog-hero .nog-hero__perk {gap:6px;padding-right:8px;}
+    }
+    @media (max-width:1024px) {
+      :root .hero.nog-hero .nog-hero__grid {grid-template-columns:minmax(0,49fr) minmax(0,51fr);}
+      :root .hero.nog-hero .nog-hero__wordmark {font-size:clamp(32px,4vw,50px);}
+      :root .hero.nog-hero .nog-hero__title-line {font-size:clamp(31px,4vw,50px);}
+      :root .hero.nog-hero .nog-hero__title-word {font-size:clamp(67px,8.2vw,110px);}
+      :root .hero.nog-hero .nog-hero__perk {font-size:10px;}
+      :root .hero.nog-hero .nog-hero__icon {width:26px;height:26px;}
+    }
+    @media (max-width:768px) {
+      :root .hero.nog-hero {
+        padding-top:calc(var(--nog-altura-cabecalho) + 8px);
+        padding-bottom:66px;min-height:auto !important;
+      }
+      :root .hero.nog-hero .nog-hero__grid {grid-template-columns:1fr;min-height:0;}
+      :root .hero.nog-hero .nog-hero__left {
+        align-items:center;text-align:center;gap:1.5rem;
+        padding:3rem 1.25rem 1.2rem;
+      }
+      :root .hero.nog-hero .nog-hero__logo-block {align-items:center;}
+      :root .hero.nog-hero .nog-hero__wordmark {font-size:clamp(33px,8vw,62px);}
+      :root .hero.nog-hero .nog-hero__title-line {font-size:clamp(34px,8vw,60px);}
+      :root .hero.nog-hero .nog-hero__title-word {
+        margin-inline:auto;font-size:clamp(58px,16.5vw,112px);
+      }
+      :root .hero.nog-hero .nog-hero__perks {justify-content:center;gap:9px;}
+      :root .hero.nog-hero .nog-hero__perk {font-size:clamp(9px,2vw,12px);padding-right:9px;}
+      :root .hero.nog-hero .nog-hero__icon {width:27px;height:27px;}
+      :root .hero.nog-hero .nog-hero__right {height:min(77vw,470px);min-height:280px;}
+      :root .hero.nog-hero .nog-hero__brush {inset:-3% 0 0 -5%;}
+      :root .hero.nog-hero .nog-hero__ribbon {bottom:40px;padding:7px 0;}
+      :root .hero.nog-hero .nog-hero__ribbon-track {font-size:11px;}
+      :root .hero.nog-hero .nog-hero__watermark {font-size:clamp(40px,9vw,64px);}
+    }
+    @media (max-width:420px) {
+      :root .hero.nog-hero .nog-hero__left {padding-top:2.6rem;}
+      :root .hero.nog-hero .nog-hero__wordmark {font-size:clamp(27px,8.1vw,38px);}
+      :root .hero.nog-hero .nog-hero__title-word {font-size:clamp(54px,16.5vw,69px);}
+      :root .hero.nog-hero .nog-hero__title-line {font-size:clamp(29px,7.8vw,39px);}
+      :root .hero.nog-hero .nog-hero__perks {gap:0;flex-wrap:nowrap;width:100%;}
+      :root .hero.nog-hero .nog-hero__perk {
+        flex:1;min-width:0;justify-content:center;gap:4px;
+        padding:0 4px;font-size:8px;
+      }
+      :root .hero.nog-hero .nog-hero__icon {width:22px;height:22px;}
+      :root .hero.nog-hero .nog-hero__right {height:80vw;min-height:255px;}
+    }
+    @media (prefers-reduced-motion:reduce) {
+      :root .hero.nog-hero .nog-hero__ribbon-track,
+      :root .hero.nog-hero .nog-hero__grid,
+      :root .hero.nog-hero .nog-hero__ribbon {animation:none !important;}
+      :root .hero.nog-hero .nog-hero__logo-letter,
+      :root .hero.nog-hero .nog-hero__title-line,
+      :root .hero.nog-hero .nog-hero__title-word {transition:none !important;}
+    }
 
     /* Visual e funcionamento do catálogo preservados. */
     :root .catalog {
@@ -494,301 +701,3 @@
         transition:none !important;
       }
     }
-  `;
-  document.head.appendChild(style);
-
-  function encerrarCarregamento() {
-    root.classList.remove('nog-carregando');
-  }
-  const limite = setTimeout(encerrarCarregamento, 4000);
-
-  function montarFooterFinal() {
-    const footer = document.querySelector('footer');
-    if (!footer || footer.classList.contains('nog-footer-final')) return;
-
-    const destaques = [
-      { id: 'plantaris', marca: 'Oakley', nome: 'Plantaris' },
-      { id: 'wayfarer', marca: 'Ray-Ban', nome: 'Original Wayfarer' },
-      { id: 'aviator', marca: 'Ray-Ban', nome: 'Aviator Classic' }
-    ];
-    const lista = (typeof products !== 'undefined' && Array.isArray(products))
-      ? products : [];
-    const escapeHTML = value => String(value).replace(/[&<>"']/g, ch => ({
-      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    })[ch]);
-    const cards = destaques.map(item => {
-      const produto = lista.find(p => p.id === item.id);
-      if (!produto) return '';
-      const nome = escapeHTML(produto.name);
-      const marca = escapeHTML(produto.brand);
-      const foto = produto.views?.[0]?.url || '';
-      return `
-        <button class="nog-footer-feature" type="button" data-nog-feature="${item.id}"
-                aria-label="Ver detalhes de ${marca} ${nome}">
-          <span class="nog-footer-feature-image">
-            ${foto ? `<img src="${escapeHTML(foto)}" alt="" loading="lazy" decoding="async">` : ''}
-          </span>
-          <span class="nog-footer-feature-copy">
-            <small>${marca}</small><strong>${nome}</strong><em>Conhecer modelo</em>
-          </span>
-        </button>`;
-    }).join('');
-
-    footer.className = 'nog-footer nog-footer-final';
-    footer.setAttribute('aria-label', 'Rodapé da NOG Lupas');
-    footer.innerHTML = `
-      <div class="nog-footer-topbar">
-        <div class="shell nog-footer-topbar-inner">
-          <p>Atendimento online • Recife, PE</p>
-          <p>Preços e disponibilidade confirmados diretamente com a NOG.</p>
-        </div>
-      </div>
-
-      <section id="nog-destaques" class="shell nog-footer-featured"
-               aria-labelledby="nog-featured-title">
-        <div class="nog-footer-featured-head">
-          <div>
-            <p class="nog-footer-eyebrow">Seleção NOG</p>
-            <h2 id="nog-featured-title">Modelos em destaque</h2>
-            <p>Três estilos para explorar. Abra cada modelo e veja os ângulos antes de escolher.</p>
-          </div>
-          <a class="nog-footer-view-all" href="#catalogo" data-nog-footer-brand="Todas">
-            Ver catálogo completo
-          </a>
-        </div>
-        <div class="nog-footer-featured-grid">${cards}</div>
-      </section>
-
-      <div class="shell nog-footer-main">
-        <div class="nog-footer-identity">
-          <a class="nog-footer-signature" href="#inicio"
-             aria-label="NOG Lupas, voltar ao início">
-            <img src="assets/logo.webp?v=20261111" alt="Logo NOG Lupas"
-                 width="68" height="68" loading="lazy">
-            <span class="nog-footer-name"><strong>NOG</strong><small>LUPAS</small></span>
-          </a>
-          <p class="nog-footer-description">A lupa que tem a sua presença.<br>De Recife, no seu corre.</p>
-        </div>
-        <nav class="nog-footer-column" aria-label="Explorar produtos">
-          <h2>Explore os modelos</h2>
-          <div class="nog-footer-links">
-            <a href="#catalogo" data-nog-footer-brand="Todas">Todos os óculos</a>
-            <a href="#catalogo" data-nog-footer-brand="Oakley">Modelos Oakley</a>
-            <a href="#catalogo" data-nog-footer-brand="Ray-Ban">Modelos Ray-Ban</a>
-          </div>
-        </nav>
-        <div class="nog-footer-column">
-          <h2>Sua experiência</h2>
-          <div class="nog-footer-links">
-            <button type="button" data-nog-footer-action="cart">Minha sacola</button>
-            <button type="button" data-nog-footer-action="account">Meu perfil neste navegador</button>
-            <a href="https://wa.me/message/JSIBLEUALLYUP1" target="_blank"
-               rel="noopener noreferrer">Consultar preço e disponibilidade</a>
-          </div>
-        </div>
-        <div class="nog-footer-column">
-          <h2>Novidades da NOG</h2>
-          <p class="nog-footer-description">
-            Acompanhe as publicações, novidades e inspirações da NOG nas redes sociais.
-          </p>
-          <div class="nog-footer-links">
-            <a href="https://www.instagram.com/nog_081/" target="_blank"
-               rel="noopener noreferrer">Acompanhar no Instagram</a>
-            <a href="https://wa.me/message/JSIBLEUALLYUP1" target="_blank"
-               rel="noopener noreferrer">Falar com a NOG</a>
-          </div>
-          <div class="nog-footer-socials">
-            <a href="https://www.instagram.com/nog_081/" target="_blank"
-               rel="noopener noreferrer" aria-label="Instagram da NOG Lupas">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="2.5" y="2.5" width="19" height="19" rx="5"/>
-                <circle cx="12" cy="12" r="4.3"/>
-                <circle cx="17.8" cy="6.2" r="1" fill="currentColor" stroke="none"/>
-              </svg>
-            </a>
-            <a href="https://wa.me/message/JSIBLEUALLYUP1" target="_blank"
-               rel="noopener noreferrer" aria-label="WhatsApp da NOG Lupas">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M20.3 11.6a8.3 8.3 0 0 1-8.4 8.3 8.6 8.6 0 0 1-3.7-.8L3 20.8l1.7-5.1a8.4 8.4 0 1 1 15.6-4.1Z"/>
-                <path d="M9 8.1c-.5-.6-1-.5-1.3.1-.6 1.2.5 3.5 2.3 5.3 1.8 1.8 4.1 2.8 5.3 2.3.6-.3.8-.9.2-1.4l-1.4-1-1 1c-1.5-.4-2.7-1.6-3.1-3.1l1-1Z"/>
-              </svg>
-            </a>
-          </div>
-        </div>
-      </div>
-
-      <section class="shell nog-footer-faq" aria-labelledby="nog-footer-faq-title">
-        <h2 id="nog-footer-faq-title">Dúvidas rápidas</h2>
-        <div class="nog-footer-faq-grid">
-          <details>
-            <summary>Como consulto o preço?</summary>
-            <p>Abra o modelo que gostou e fale com a NOG pelo WhatsApp. Valores e disponibilidade são confirmados no atendimento.</p>
-          </details>
-          <details>
-            <summary>Posso escolher outra cor?</summary>
-            <p>Você pode informar a cor de preferência no detalhe do modelo. A NOG confirma as opções disponíveis.</p>
-          </details>
-          <details>
-            <summary>Como funciona a sacola?</summary>
-            <p>Ela organiza os modelos que você gostou e permite copiar a seleção para o WhatsApp. Não há pagamento pelo site.</p>
-          </details>
-        </div>
-      </section>
-      <div class="nog-footer-bottom">
-        <div class="shell nog-footer-bottom-inner">
-          <span>© ${new Date().getFullYear()} NOG Lupas. Todos os direitos reservados.</span>
-          <span>Brasil • Recife, Pernambuco</span>
-        </div>
-        <div class="shell nog-footer-legal">
-          <p>Catálogo de apresentação. Produtos, preços e disponibilidade sujeitos à confirmação com a NOG.
-          Oakley e Ray-Ban são marcas de seus respectivos titulares. A NOG não é o site oficial dessas marcas.</p>
-        </div>
-      </div>`;
-
-    footer.addEventListener('click', event => {
-      const destaque = event.target.closest('[data-nog-feature]');
-      if (destaque) {
-        const id = destaque.dataset.nogFeature;
-        const busca = document.querySelector('#search');
-        if (busca) {
-          busca.value = '';
-          busca.dispatchEvent(new Event('input', { bubbles: true }));
-        }
-        document.querySelector('[data-brand="Todas"]')?.click();
-        const abrir = [...document.querySelectorAll('#products [data-open]')]
-          .find(el => el.dataset.open === id);
-        if (abrir) abrir.click();
-        else document.querySelector('#catalogo')?.scrollIntoView();
-        return;
-      }
-      const marca = event.target.closest('[data-nog-footer-brand]');
-      if (marca) {
-        event.preventDefault();
-        const nav = [...document.querySelectorAll('[data-brand-link]')]
-          .find(el => el.dataset.brandLink === marca.dataset.nogFooterBrand);
-        if (nav) {
-          nav.click();
-          document.querySelector('#catalogo')?.scrollIntoView();
-        }
-        return;
-      }
-      const acao = event.target.closest('[data-nog-footer-action]');
-      if (acao) {
-        document.querySelector(
-          acao.dataset.nogFooterAction === 'account' ? '#nog-account' : '#nog-cart'
-        )?.click();
-      }
-    });
-  }
-
-  /* Adiciona apenas Novidades e Destaques ao menu já existente. */
-  function adicionarItensAoMenu() {
-    const links = [
-      { texto: 'Novidades', href: 'https://www.instagram.com/nog_081/', externo: true },
-      { texto: 'Destaques', href: '#nog-destaques', externo: false }
-    ];
-    ['.site-header .main-nav', '#mobile-nav'].forEach(seletor => {
-      const nav = document.querySelector(seletor);
-      if (!nav || nav.querySelector('[data-nog-menu-extra]')) return;
-      const primeiroItem = nav.querySelector('a');
-      links.forEach(item => {
-        const link = document.createElement('a');
-        link.textContent = item.texto;
-        link.href = item.href;
-        link.dataset.nogMenuExtra = item.texto.toLowerCase();
-        if (item.externo) {
-          link.target = '_blank';
-          link.rel = 'noopener noreferrer';
-          link.setAttribute('aria-label', 'Novidades da NOG no Instagram (abre nova aba)');
-        }
-        if (seletor === '#mobile-nav') {
-          link.addEventListener('click', () => {
-            if (typeof closeMenu === 'function') closeMenu();
-          });
-        }
-        nav.insertBefore(link, primeiroItem);
-      });
-    });
-  }
-
-  function prepararInterface() {
-    const botao = document.querySelector('.hero .cta');
-    if (botao) botao.textContent = 'COMPRE AGORA';
-    const catalogo = document.querySelector('.catalog');
-    const cabecalhoCatalogo = catalogo?.querySelector('.catalog-head');
-    if (catalogo && cabecalhoCatalogo && !catalogo.querySelector('.nog-catalog-intro')) {
-      const intro = document.createElement('div');
-      intro.className = 'nog-catalog-intro';
-      intro.innerHTML = `
-        <p class="nog-catalog-kicker">Lupas para todos os estilos</p>
-        <p class="nog-catalog-subline">Escolha a sua presença</p>`;
-      catalogo.insertBefore(intro, cabecalhoCatalogo);
-    }
-
-    const header = document.querySelector('.site-header');
-    if (header) {
-      header.querySelector('.nog-indicacao')?.remove();
-      const barra = header.querySelector('.header-inner');
-      if (barra && !header.querySelector('.nog-topbar')) {
-        const topo = document.createElement('div');
-        topo.className = 'nog-topbar';
-        topo.innerHTML = `
-          <div class="shell nog-topbar-inner">
-            <p>NOVIDADE | CONHEÇA A SELEÇÃO DE ÓCULOS DA NOG</p>
-            <a href="https://wa.me/message/JSIBLEUALLYUP1" target="_blank"
-               rel="noopener noreferrer">ATENDIMENTO ONLINE</a>
-          </div>`;
-        header.insertBefore(topo, barra);
-      }
-      if (barra && !header.querySelector('.nog-promo')) {
-        const promo = document.createElement('a');
-        promo.className = 'nog-promo';
-        promo.href = '#catalogo';
-        promo.textContent = 'TEM PRESENÇA. TEM NOG. | ENCONTRE A SUA PRÓXIMA LUPA';
-        barra.insertAdjacentElement('afterend', promo);
-      }
-      adicionarItensAoMenu();
-      function atualizarAltura() {
-        const altura = ['.nog-topbar', '.header-inner', '.nog-promo'].reduce(
-          (soma, seletor) => soma + (
-            header.querySelector(seletor)?.getBoundingClientRect().height || 0
-          ), 0);
-        root.style.setProperty('--nog-altura-cabecalho', `${Math.ceil(altura)}px`);
-      }
-      function atualizarCabecalho() {
-        header.classList.toggle('nog-rolado', window.scrollY > 40);
-      }
-      atualizarAltura();
-      atualizarCabecalho();
-      window.addEventListener('scroll', atualizarCabecalho, { passive: true });
-      window.addEventListener('resize', atualizarAltura, { passive: true });
-      if ('ResizeObserver' in window) {
-        const observer = new ResizeObserver(atualizarAltura);
-        ['.nog-topbar', '.header-inner', '.nog-promo'].forEach(seletor => {
-          const elemento = header.querySelector(seletor);
-          if (elemento) observer.observe(elemento);
-        });
-      }
-    }
-
-    montarFooterFinal();
-    const foto = document.querySelector('#campaign');
-    let encerrado = false;
-    function concluir() {
-      if (encerrado) return;
-      encerrado = true;
-      clearTimeout(limite);
-      encerrarCarregamento();
-    }
-    if (!foto || foto.complete) concluir();
-    else {
-      foto.addEventListener('load', concluir, { once: true });
-      foto.addEventListener('error', concluir, { once: true });
-    }
-    window.addEventListener('pageshow', encerrarCarregamento);
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', prepararInterface, { once: true });
-  } else prepararInterface();
-})();
