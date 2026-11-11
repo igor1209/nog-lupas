@@ -932,93 +932,98 @@
     });
   }
 
-  /* Hero: logo, título, ícones e faixa são HTML/SVG reais.
-     O único elemento fotográfico é assets/homem-nog.png. */
+
+  /* Hero em HTML/CSS/SVG, sem tipografia incorporada na fotografia.
+     Substituída após nog-upgrade.js inicializar os controles legados. */
   function montarNovaHero() {
     const hero = document.querySelector('#inicio.hero');
-    if (!hero || hero.classList.contains('nog-hero-v2')) return;
+    if (!hero || hero.classList.contains('nog-hero')) return;
 
     const letras = palavra => Array.from(palavra).map(letra =>
-      `<span class="nog-logo-letter" aria-hidden="true">${letra}</span>`
+      `<span class="nog-hero__logo-letter" aria-hidden="true">${letra}</span>`
     ).join('');
 
-    const itens = 'NOG LUPAS · ÓCULOS · ESTILO · PROTEÇÃO · PERFORMANCE';
-    const repetir = () => Array(6).fill(0).map(() =>
-      `<span>${itens}</span>`
-    ).join('');
+    const faixa = 'NOG LUPAS • ÓCULOS • ESTILO • PROTEÇÃO • PERFORMANCE • ';
+    const faixaLonga = Array(4).fill(faixa).join('');
 
-    hero.classList.add('nog-hero-v2');
-    hero.setAttribute('aria-labelledby','hero-title');
+    hero.classList.add('nog-hero');
+    hero.setAttribute('aria-labelledby', 'hero-title');
+
     hero.innerHTML = `
-      <div class="nog-hero-inner">
-        <div class="nog-hero-content">
-          <a class="nog-hero-logo" href="#inicio" aria-label="NOG Lupas, início">
-            <span class="nog-logo-row" aria-hidden="true">
-              <span class="nog-logo-word">${letras('NOG')}</span>
-              <span class="nog-logo-word">${letras('LUPAS')}</span>
-            </span>
-            <span class="nog-logo-subtitle">Óculos e estilo</span>
-          </a>
-          <h1 class="nog-welcome" id="hero-title">
-            <span class="nog-welcome-top">Sejam bem</span>
-            <span class="nog-welcome-bottom">Vindos!</span>
-          </h1>
-          <div class="nog-hero-benefits" aria-label="Diferenciais da NOG">
-            <div class="nog-benefit">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M12 2 20 5v6c0 5-3 8.5-8 11-5-2.5-8-6-8-11V5l8-3Z"/>
-                <path d="m8 12 2.7 2.7L16.5 9"/>
+      <div class="nog-hero__bg" aria-hidden="true"></div>
+
+      <div class="nog-hero__grid">
+        <div class="nog-hero__left">
+          <div class="nog-hero__logo-block">
+            <a class="nog-hero__logo-link" href="#inicio" aria-label="NOG Lupas — início">
+              <svg class="nog-hero__crown" viewBox="0 0 36 26" aria-hidden="true">
+                <path d="M2 7 11 13 17 2 23 13 34 7 30 23H6Z"/>
+                <rect x="6" y="23" width="24" height="2" rx="1"/>
               </svg>
-              <strong>Qualidade<br>garantida</strong>
-            </div>
-            <div class="nog-benefit">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M3 6h11v10H3zM14 9h4l3 4v3h-7"/>
-                <circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/>
-                <path d="M1 10h5M1 13h4"/>
-              </svg>
-              <strong>Envio<br>rápido</strong>
-            </div>
-            <div class="nog-benefit">
-              <svg viewBox="0 0 24 24" aria-hidden="true">
-                <rect x="2" y="5" width="20" height="14" rx="2"/>
-                <path d="M2 10h20M6 15h5"/>
-              </svg>
-              <strong>Pagamento<br>seguro</strong>
-            </div>
+              <span class="nog-hero__wordmark" aria-hidden="true">
+                <span class="nog-hero__logo-word">${letras('NOG')}</span>
+                <span class="nog-hero__logo-word">${letras('LUPAS')}</span>
+              </span>
+            </a>
+            <p class="nog-hero__subtitle">Óculos e Estilo</p>
           </div>
-          <div class="nog-hero-actions">
-            <a class="nog-hero-cta" href="#catalogo">Explorar modelos</a>
+
+          <h1 class="nog-hero__title" id="hero-title">
+            <span class="nog-hero__title-line">Sejam bem</span>
+            <span class="nog-hero__title-word">Vindos!</span>
+          </h1>
+
+          <ul class="nog-hero__perks" aria-label="Diferenciais anunciados pela NOG">
+            <li class="nog-hero__perk">
+              <svg class="nog-hero__icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 2 4 5v6c0 5 3.4 9 8 11 4.6-2 8-6 8-11V5l-8-3Z"/>
+                <path d="m9 12 2 2 4-4"/>
+              </svg>
+              <span>Qualidade<br>Garantida</span>
+            </li>
+            <li class="nog-hero__perk">
+              <svg class="nog-hero__icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M3 17V7a1 1 0 0 1 1-1h9v11"/>
+                <path d="M13 10h4l3 3v4h-2"/>
+                <circle cx="7" cy="18" r="1.6"/>
+                <circle cx="17" cy="18" r="1.6"/>
+              </svg>
+              <span>Envio<br>Rápido</span>
+            </li>
+            <li class="nog-hero__perk">
+              <svg class="nog-hero__icon" viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="2" y="5" width="20" height="14" rx="2"/>
+                <path d="M2 10h20"/>
+              </svg>
+              <span>Pagamento<br>Seguro</span>
+            </li>
+          </ul>
+
+          <div class="nog-hero__actions">
+            <a class="nog-hero__cta" href="#catalogo">Explorar modelos</a>
           </div>
         </div>
-        <div class="nog-hero-visual">
-          <svg class="nog-hero-brush" viewBox="0 0 750 800" preserveAspectRatio="none" aria-hidden="true">
-            <defs>
-              <filter id="nog-brush-rough" x="-8%" y="-8%" width="116%" height="116%">
-                <feTurbulence type="fractalNoise" baseFrequency=".018 .035" numOctaves="3" seed="6" result="grain"/>
-                <feDisplacementMap in="SourceGraphic" in2="grain" scale="22" xChannelSelector="R" yChannelSelector="G"/>
-              </filter>
-            </defs>
-            <g filter="url(#nog-brush-rough)">
-              <path fill="#fff" d="M155 2 746 0 692 31 748 58 715 85 750 112 716 129 750 167 711 187 743 205 714 238 750 260 728 301 749 322 707 345 748 377 706 398 743 419 707 444 747 466 708 499 746 514 699 544 748 565 712 584 742 607 694 632 734 653 703 689 737 704 708 733 750 754 717 783 740 799 71 800 100 757 58 729 109 697 74 673 113 645 66 618 117 594 76 562 122 540 93 507 133 477 88 449 130 412 93 386 142 361 105 332 154 307 123 279 165 247 140 220 179 197 153 170 203 146 178 126 222 102 204 82 250 56 233 36Z"/>
-            <path fill="#fff" d="M28 170 155 110 142 139 23 201Z M3 390 139 337 129 357 19 416Z M4 605 120 555 106 578 14 637Z M52 766 131 722 115 746 40 788Z"/>
-            </g>
-          </svg>
-          <img id="campaign" class="nog-hero-man"
+
+        <div class="nog-hero__right">
+          <div class="nog-hero__brush" aria-hidden="true"></div>
+          <img id="campaign"
+               class="nog-hero__photo"
                src="assets/homem-nog.png"
-               width="829" height="1037"
-               alt="Representante da NOG Lupas usando óculos escuros e segurando uma bota de exposição"
+               alt="Representante da NOG Lupas usando óculos escuros e segurando um item de exposição"
+               width="829" height="1037" loading="eager"
                decoding="async" fetchpriority="high">
         </div>
       </div>
-      <div class="nog-hero-watermark" aria-hidden="true">
-        <span>NOG LUPAS</span><span>NOG LUPAS</span><span>NOG LUPAS</span>
-      </div>
-      <div class="nog-hero-marquee" aria-hidden="true">
-        <div class="nog-marquee-track">
-          <div class="nog-marquee-segment">${repetir()}</div>
-          <div class="nog-marquee-segment">${repetir()}</div>
+
+      <div class="nog-hero__ribbon" aria-hidden="true">
+        <div class="nog-hero__ribbon-track">
+          <span>${faixaLonga}</span>
+          <span>${faixaLonga}</span>
         </div>
+      </div>
+
+      <div class="nog-hero__watermark" aria-hidden="true">
+        NOG LUPAS &nbsp; NOG LUPAS &nbsp; NOG LUPAS
       </div>
     `;
   }
